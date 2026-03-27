@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../constants/app_theme.dart';
 import '../models/food_item.dart';
 import '../services/hive_service.dart';
+import '../widgets/food_card.dart';
 
 class DetailScreen extends StatelessWidget {
   final FoodItem item;
@@ -58,27 +59,8 @@ class DetailScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 60),
                     // Emoji display
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(36),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 20,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          item.emoji,
-                          style: const TextStyle(fontSize: 72),
-                        ),
-                      ),
-                    ),
+                    // NEW
+                    FoodImage(item: item, size: 130, borderRadius: 36),
                   ],
                 ),
               ),

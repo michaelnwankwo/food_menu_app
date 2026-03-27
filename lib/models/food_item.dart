@@ -20,7 +20,10 @@ class FoodItem extends HiveObject {
   String category;
 
   @HiveField(5)
-  String emoji;
+  String emoji; // kept for backwards compatibility
+
+  @HiveField(6)
+  String imageUrl; // 🆕 new field
 
   FoodItem({
     required this.id,
@@ -29,5 +32,9 @@ class FoodItem extends HiveObject {
     required this.price,
     required this.category,
     required this.emoji,
+    this.imageUrl = '', // defaults to empty
   });
+
+  // Helper — true if a valid image URL exists
+  bool get hasImage => imageUrl.isNotEmpty;
 }

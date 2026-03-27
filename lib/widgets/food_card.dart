@@ -45,23 +45,10 @@ class FoodCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    // ── Emoji ───────────────────────────────────
-                    Container(
-                      width: 80,
-                      height: 80,
-                      margin: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: categoryColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: Text(
-                          item.emoji,
-                          style: const TextStyle(fontSize: 36),
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: FoodImage(item: item, size: 80),
                     ),
-
                     // ── Info ────────────────────────────────────
                     Expanded(
                       child: Column(
@@ -185,6 +172,65 @@ class FoodCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+// ── Reusable Food Image Widget ────────────────────────────────
+class FoodImage extends StatelessWidget {
+  final FoodItem item;
+  final double size;
+  final double borderRadius;
+
+  const FoodImage({
+    super.key,
+    required this.item,
+    this.size = 80,
+    this.borderRadius = 16,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final categoryColor =
+        AppTheme.categoryColors[item.category] ?? const Color(0xFFFFF3E0);
+
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: categoryColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(borderRadius),
+        child: item.hasImage
+            ? Image.network(
+                item.imageUrl,
+                width: size,
+                height: size,
+                fit: BoxFit.cover,
+                // Show emoji while loading
+                loadingBuilder: (_, child, progress) {
+                  if (progress == null) return child;
+                  return Center(
+                    child: Text(
+                      item.emoji,
+                      style: TextStyle(fontSize: size * 0.4),
+                    ),
+                  );
+                },
+                // Fall back to emoji on error
+                errorBuilder: (_, __, ___) => Center(
+                  child: Text(
+                    item.emoji,
+                    style: TextStyle(fontSize: size * 0.4),
+                  ),
+                ),
+              )
+            : Center(
+                child: Text(item.emoji, style: TextStyle(fontSize: size * 0.4)),
+              ),
+      ),
     );
   }
 }

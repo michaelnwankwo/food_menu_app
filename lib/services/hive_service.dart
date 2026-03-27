@@ -40,7 +40,7 @@ class HiveService {
 
   // SEED — add Nigerian food data on first launch
   static Future<void> seedIfEmpty() async {
-    if (_box().isNotEmpty) return; // only seed once
+    if (_box().isNotEmpty) return;
 
     final items = [
       FoodItem(
@@ -52,6 +52,7 @@ class HiveService {
         price: 1800,
         category: 'Swallows',
         emoji: '🍲',
+        imageUrl: 'https://mummachis-kitchen.netlify.app/egusi.png',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -62,6 +63,7 @@ class HiveService {
         price: 2500,
         category: 'Swallows',
         emoji: '🫕',
+        imageUrl: 'https://mummachis-kitchen.netlify.app/oha.png',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -72,6 +74,8 @@ class HiveService {
         price: 2000,
         category: 'Swallows',
         emoji: '🥣',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRenpQ2SuM2zAC5VKJCxO2R10diRXonOH7yrw&s',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -82,6 +86,7 @@ class HiveService {
         price: 2800,
         category: 'Rice',
         emoji: '🍚',
+        imageUrl: 'https://mummachis-kitchen.netlify.app/jollof.png',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -92,6 +97,8 @@ class HiveService {
         price: 3000,
         category: 'Rice',
         emoji: '🍛',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3tH9SlRVdVZmcwBT_TMUipRkuplLkdOumJA&s',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -102,6 +109,8 @@ class HiveService {
         price: 2500,
         category: 'Rice',
         emoji: '🍱',
+        imageUrl:
+            'https://kikifoodies.com/wp-content/uploads/2024/11/ET5B7665-7.jpg',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -112,6 +121,7 @@ class HiveService {
         price: 2200,
         category: 'Soups',
         emoji: '🍵',
+        imageUrl: 'https://mummachis-kitchen.netlify.app/banga.png',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -122,16 +132,19 @@ class HiveService {
         price: 2800,
         category: 'Soups',
         emoji: '🥘',
+        imageUrl: 'https://mummachis-kitchen.netlify.app/afang.png',
       ),
       FoodItem(
         id: const Uuid().v4(),
-        name: 'Grilled Catfish (Point & Kill)',
+        name: 'Grilled Catfish',
         description:
             'Fresh whole catfish grilled over open fire with pepper '
             'sauce, onions, and served with a side of yaji spice.',
         price: 4500,
         category: 'Proteins',
         emoji: '🐟',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYrMP-XFLCVEOzmmbdGRa9oaVNZG_y0oS8Tg&s',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -142,6 +155,8 @@ class HiveService {
         price: 2000,
         category: 'Proteins',
         emoji: '🥩',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-D7Y3Ctv4cvzvGoa-EOMIhzcMylYkWKXUdw&s',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -152,6 +167,8 @@ class HiveService {
         price: 500,
         category: 'Drinks',
         emoji: '🍹',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg3CSEQli2F-ttI1jkLNO46TGRfRWbmyzilw&s',
       ),
       FoodItem(
         id: const Uuid().v4(),
@@ -162,6 +179,8 @@ class HiveService {
         price: 600,
         category: 'Drinks',
         emoji: '🥛',
+        imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRAz5RiPpSsjr6MOgxwKABoMsPG_pbflproA&s',
       ),
     ];
 
