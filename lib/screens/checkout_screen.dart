@@ -14,15 +14,14 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final _formKey        = GlobalKey<FormState>();
-  final _nameController    = TextEditingController();
-  final _phoneController   = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
-  bool _isPlacingOrder  = false;
+  bool _isPlacingOrder = false;
 
   // ── Restaurant WhatsApp number ────────────────────────────────
-  // Replace with the restaurant owner's number (with country code)
-  static const String _restaurantWhatsApp = '+2348000000000';
+  static const String _restaurantWhatsApp = '+2348086850849';
 
   @override
   void dispose() {
@@ -36,38 +35,31 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isPlacingOrder = true);
 
-    final cart    = context.read<CartProvider>();
-    final name    = _nameController.text.trim();
-    final phone   = _phoneController.text.trim();
+    final cart = context.read<CartProvider>();
+    final name = _nameController.text.trim();
+    final phone = _phoneController.text.trim();
     final address = _addressController.text.trim();
 
     // 1 — Save order to Hive
     await OrderRepository.placeOrder(
-      cartItems:       cart.items,
-      totalAmount:     cart.totalPrice,
+      cartItems: cart.items,
+      totalAmount: cart.totalPrice,
       deliveryAddress: address,
-      phoneNumber:     phone,
+      phoneNumber: phone,
     );
 
     // 2 — Build WhatsApp message
-    final message = cart.buildOrderMessage(
-      address: address,
-      phone:   phone,
-    );
+    final message = cart.buildOrderMessage(address: address, phone: phone);
 
     // 3 — Launch WhatsApp
     final encoded = Uri.encodeComponent(message);
-    final waUrl   = Uri.parse(
-      'https://wa.me/$_restaurantWhatsApp?text=$encoded',
-    );
+    final waUrl = Uri.parse('https://wa.me/$_restaurantWhatsApp?text=$encoded');
 
     if (await canLaunchUrl(waUrl)) {
       await launchUrl(waUrl, mode: LaunchMode.externalApplication);
     } else {
       // Fallback to SMS if WhatsApp not available
-      final smsUrl = Uri.parse(
-        'sms:$_restaurantWhatsApp?body=$encoded',
-      );
+      final smsUrl = Uri.parse('sms:$_restaurantWhatsApp?body=$encoded');
       await launchUrl(smsUrl);
     }
 
@@ -85,9 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -162,16 +152,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-
             // ── Order Summary Card ────────────────────────────
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppTheme.secondary.withOpacity(0.06),
                 borderRadius: BorderRadius.circular(18),
-                border: Border.all(
-                  color: AppTheme.secondary.withOpacity(0.2),
-                ),
+                border: Border.all(color: AppTheme.secondary.withOpacity(0.2)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,8 +285,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
                 labelText: 'Delivery Address',
-                hintText:
-                    'e.g. 12 Awolowo Road, Ikoyi, Lagos',
+                hintText: 'e.g. 12 Awolowo Road, Ikoyi, Lagos',
                 prefixIcon: Padding(
                   padding: EdgeInsets.only(bottom: 40),
                   child: Icon(Icons.location_on_outlined),
@@ -336,9 +322,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       )
                     : const Icon(Icons.send_rounded),
                 label: Text(
-                  _isPlacingOrder
-                      ? 'Placing Order...'
-                      : 'Order via WhatsApp',
+                  _isPlacingOrder ? 'Placing Order...' : 'Order via WhatsApp',
                 ),
               ),
             ),
