@@ -15,6 +15,13 @@ Customers can browse the menu, add items to cart, and place orders directly via 
 - 🗑️ Delete dishes from the menu
 - 💾 Persistent local storage with Hive
 
+
+
+## 📸 SCREENSHOTS
+![HOME SCREEN] (SCREENSHOT 1.png)
+![CART ITEMS SCREEN] (SCREENSHOT 2.png)
+![CHECKOUT SCREEN] (SCREENSHOT 3.png)
+
 ---
 
 ## 🏗️ Architecture
