@@ -36,6 +36,7 @@ class CartProvider extends ChangeNotifier {
         foodItemId: foodItem.id,
         name: foodItem.name,
         emoji: foodItem.emoji,
+        imageUrl: foodItem.imageUrl,
         price: foodItem.price,
         category: foodItem.category,
       );

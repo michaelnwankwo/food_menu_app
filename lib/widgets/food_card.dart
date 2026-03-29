@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/food_item.dart';
 import '../constants/app_theme.dart';
 import '../providers/cart_provider.dart';
@@ -18,9 +19,6 @@ class FoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryColor =
-        AppTheme.categoryColors[item.category] ?? const Color(0xFFFFF3E0);
-
     return Consumer<CartProvider>(
       builder: (context, cart, _) {
         final inCart = cart.isInCart(item.id);
@@ -45,10 +43,12 @@ class FoodCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
+                    // ── Food Image ──────────────────────────────
                     Padding(
                       padding: const EdgeInsets.all(12),
                       child: FoodImage(item: item, size: 80),
                     ),
+
                     // ── Info ────────────────────────────────────
                     Expanded(
                       child: Column(
@@ -93,13 +93,12 @@ class FoodCard extends StatelessWidget {
                   ],
                 ),
 
-                // ── Add to Cart Controls ─────────────────────────
+                // ── Add to Cart Controls ──────────────────────
                 Container(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   child: inCart
                       ? Row(
                           children: [
-                            // Quantity controls
                             Expanded(
                               child: Container(
                                 decoration: BoxDecoration(
@@ -110,7 +109,6 @@ class FoodCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // Minus
                                     IconButton(
                                       onPressed: () => cart.removeItem(item.id),
                                       icon: const Icon(
@@ -119,7 +117,6 @@ class FoodCard extends StatelessWidget {
                                       ),
                                       color: AppTheme.primary,
                                     ),
-                                    // Quantity
                                     Text(
                                       '$quantity',
                                       style: const TextStyle(
@@ -128,7 +125,6 @@ class FoodCard extends StatelessWidget {
                                         color: AppTheme.primary,
                                       ),
                                     ),
-                                    // Plus
                                     IconButton(
                                       onPressed: () => cart.addItem(item),
                                       icon: const Icon(
@@ -204,23 +200,18 @@ class FoodImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: item.hasImage
-            ? Image.network(
-                item.imageUrl,
+            ? CachedNetworkImage(
+                imageUrl: item.imageUrl,
                 width: size,
                 height: size,
                 fit: BoxFit.cover,
-                // Show emoji while loading
-                loadingBuilder: (_, child, progress) {
-                  if (progress == null) return child;
-                  return Center(
-                    child: Text(
-                      item.emoji,
-                      style: TextStyle(fontSize: size * 0.4),
-                    ),
-                  );
-                },
-                // Fall back to emoji on error
-                errorBuilder: (_, __, ___) => Center(
+                placeholder: (_, __) => Center(
+                  child: Text(
+                    item.emoji,
+                    style: TextStyle(fontSize: size * 0.4),
+                  ),
+                ),
+                errorWidget: (_, __, ___) => Center(
                   child: Text(
                     item.emoji,
                     style: TextStyle(fontSize: size * 0.4),

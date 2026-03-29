@@ -5,6 +5,9 @@ import '../constants/app_theme.dart';
 import '../providers/cart_provider.dart';
 import '../services/order_repository.dart';
 import 'order_history_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
+import '../widgets/food_card.dart'; // 👈 gives us FoodImage
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -172,13 +175,79 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
+                  // NEW — with real images
                   ...cart.items.map(
                     (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 6),
+                      padding: const EdgeInsets.only(bottom: 10),
                       child: Row(
                         children: [
-                          Text(item.emoji),
-                          const SizedBox(width: 8),
+                          // ── Food Image ──────────────────────────────
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: item.imageUrl.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: item.imageUrl,
+                                    width: 44,
+                                    height: 44,
+                                    fit: BoxFit.cover,
+                                    placeholder: (_, __) => Container(
+                                      width: 44,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFE0E0E0),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: const Center(
+                                        child: SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: AppTheme.primary,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (_, __, ___) => Container(
+                                      width: 44,
+                                      height: 44,
+                                      decoration: BoxDecoration(
+                                        color:
+                                            AppTheme.categoryColors[item
+                                                .category] ??
+                                            const Color(0xFFFFF3E0),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          item.emoji,
+                                          style: const TextStyle(fontSize: 22),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 44,
+                                    height: 44,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          AppTheme.categoryColors[item
+                                              .category] ??
+                                          const Color(0xFFFFF3E0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        item.emoji,
+                                        style: const TextStyle(fontSize: 22),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+
+                          const SizedBox(width: 10),
+
+                          // ── Name + Quantity ─────────────────────────
                           Expanded(
                             child: Text(
                               '${item.name} x${item.quantity}',
@@ -188,6 +257,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ),
                           ),
+
+                          // ── Subtotal ────────────────────────────────
                           Text(
                             '₦${item.subtotal.toStringAsFixed(2)}',
                             style: const TextStyle(

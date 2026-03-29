@@ -33,7 +33,10 @@ class Order extends HiveObject {
   final DateTime createdAt;
 
   @HiveField(9)
-  String status; // 'Pending', 'Confirmed', 'Delivered'
+  String status;
+
+  @HiveField(10)
+  final List<String> imageUrls; // 👈 new field
 
   Order({
     required this.id,
@@ -45,6 +48,7 @@ class Order extends HiveObject {
     required this.deliveryAddress,
     required this.phoneNumber,
     required this.createdAt,
+    required this.imageUrls, // 👈 new field
     this.status = 'Pending',
   });
 
@@ -55,6 +59,7 @@ class Order extends HiveObject {
       foodItemId: '',
       name: itemNames[i],
       emoji: emojis[i],
+      imageUrl: imageUrls[i], // 👈 pass imageUrl
       price: prices[i],
       category: '',
       quantity: quantities[i],

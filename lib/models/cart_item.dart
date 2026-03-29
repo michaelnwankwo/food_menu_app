@@ -4,6 +4,7 @@ class CartItem {
   final String emoji;
   final double price;
   final String category;
+  final String imageUrl;
   int quantity;
 
   CartItem({
@@ -11,6 +12,7 @@ class CartItem {
     required this.name,
     required this.emoji,
     required this.price,
+    required this.imageUrl,
     required this.category,
     this.quantity = 1,
   });

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../constants/app_theme.dart';
 import '../providers/cart_provider.dart';
 import 'checkout_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -53,19 +55,61 @@ class CartScreen extends StatelessWidget {
                       child: Row(
                         children: [
                           // Emoji
-                          Container(
-                            width: 56,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              color: categoryColor,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Center(
-                              child: Text(
-                                item.emoji,
-                                style: const TextStyle(fontSize: 28),
-                              ),
-                            ),
+                          // NEW — with real images
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: item.imageUrl.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: item.imageUrl,
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.cover,
+                                    placeholder: (_, __) => Shimmer.fromColors(
+                                      baseColor: const Color(0xFFE0E0E0),
+                                      highlightColor: const Color(0xFFF5F5F5),
+                                      child: Container(
+                                        width: 56,
+                                        height: 56,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(
+                                            14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    errorWidget: (_, __, ___) => Container(
+                                      width: 56,
+                                      height: 56,
+                                      color:
+                                          AppTheme.categoryColors[item
+                                              .category] ??
+                                          const Color(0xFFFFF3E0),
+                                      child: Center(
+                                        child: Text(
+                                          item.emoji,
+                                          style: const TextStyle(fontSize: 28),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: 56,
+                                    height: 56,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          AppTheme.categoryColors[item
+                                              .category] ??
+                                          const Color(0xFFFFF3E0),
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        item.emoji,
+                                        style: const TextStyle(fontSize: 28),
+                                      ),
+                                    ),
+                                  ),
                           ),
 
                           const SizedBox(width: 12),

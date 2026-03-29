@@ -21,6 +21,7 @@ class OrderRepository {
       quantities: cartItems.map((e) => e.quantity).toList(),
       prices: cartItems.map((e) => e.price).toList(),
       emojis: cartItems.map((e) => e.emoji).toList(),
+      imageUrls: cartItems.map((e) => e.imageUrl).toList(),
       totalAmount: totalAmount,
       deliveryAddress: deliveryAddress,
       phoneNumber: phoneNumber,
